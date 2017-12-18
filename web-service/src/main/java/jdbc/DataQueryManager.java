@@ -42,5 +42,8 @@ public class DataQueryManager {
         }
     }
 
-
+    public static Integer getVacanciesCount() {
+        MySqlManager manager = new MySqlManager();
+        return manager.getObject("select count(*) from `vacancy_schema`.`vacancies`", resultSet -> resultSet.getInt(1));
+    }
 }

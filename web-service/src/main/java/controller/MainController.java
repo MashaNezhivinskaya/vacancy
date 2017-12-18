@@ -103,6 +103,11 @@ public class MainController {
 		VacancyManager.instertVacancyNullValid(vacancy);
 		return "OK";
 	}
+
+    @RequestMapping(method = RequestMethod.GET, value = "/vacancies/count", produces = "application/json; charset=UTF-8")
+    public Integer getVacanciesCount() {
+        return DataQueryManager.getVacanciesCount();
+    }
 	
 	private String decodeStr(String results) throws UnsupportedEncodingException {
 		results = java.net.URLDecoder.decode(results, "UTF-8");
