@@ -16,32 +16,31 @@ import java.util.List;
  */
 public class DictionaryFiller {
     public static void fillAllDictionaries() throws IOException {
-        MySqlManager manager = new MySqlManager();
 
         String dictionaries = Jsoup.connect("https://api.hh.ru/dictionaries").ignoreContentType(true).execute().body();
 
         List<Currency> currencies = DictionaryResolver.getObjects(dictionaries, "currency", Currency.class);
-        manager.executeBatchStatement("INSERT INTO `vacancy_schema`.`currency` (`name`, `id`, `rate`) VALUES (?, ?, ?)",
+        MySqlManager.getInstance().executeBatchStatement("INSERT INTO `vacancy_schema`.`currency` (`name`, `id`, `rate`) VALUES (?, ?, ?)",
                 currencies, (preparedStatement, object) -> {
                     preparedStatement.setString(1, object.getName());
                     preparedStatement.setString(2, object.getCode());
                     preparedStatement.setDouble(3, object.getRate());
                 });
 
-        DictionaryFiller.fillSimpleDictionary(manager, dictionaries, "schedule");
-        DictionaryFiller.fillSimpleDictionary(manager, dictionaries, "experience");
-        DictionaryFiller.fillSimpleDictionary(manager, dictionaries, "employment");
+        DictionaryFiller.fillSimpleDictionary(MySqlManager.getInstance(), dictionaries, "schedule");
+        DictionaryFiller.fillSimpleDictionary(MySqlManager.getInstance(), dictionaries, "experience");
+        DictionaryFiller.fillSimpleDictionary(MySqlManager.getInstance(), dictionaries, "employment");
 
         String specializationsStr = Jsoup.connect("https://api.hh.ru/specializations").ignoreContentType(true).execute().body();
         Specialization[] specializationObjects = new Gson().fromJson(specializationsStr, Specialization[].class);
 
         Arrays.stream(specializationObjects).forEach(specialization -> {
-            manager.executePreparedStatement("INSERT INTO `vacancy_schema`.`profarea` (`id`, `name`) VALUES (? , ?)", preparedStatement -> {
+            MySqlManager.getInstance().executePreparedStatement("INSERT INTO `vacancy_schema`.`profarea` (`id`, `name`) VALUES (? , ?)", preparedStatement -> {
                         preparedStatement.setInt(1, specialization.getId());
                         preparedStatement.setString(2, specialization.getName());
                     }
             );
-            manager.executeBatchStatement("INSERT INTO `vacancy_schema`.`specialization` (`id`, `name`, `profarea_id`) VALUES (?, ?, " + specialization.getId() + ")",
+            MySqlManager.getInstance().executeBatchStatement("INSERT INTO `vacancy_schema`.`specialization` (`id`, `name`, `profarea_id`) VALUES (?, ?, " + specialization.getId() + ")",
                     specialization.getSpecializations(), (preparedStatement, object) -> {
                         preparedStatement.setString(1, object.getId());
                         preparedStatement.setString(2, object.getName());

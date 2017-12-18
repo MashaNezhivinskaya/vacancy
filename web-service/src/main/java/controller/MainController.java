@@ -79,8 +79,7 @@ public class MainController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/dictionary", produces = "application/json; charset=UTF-8")
 	public List<DictionaryEntity> getDictionary(@RequestParam String name) {
-		MySqlManager manager = new MySqlManager();
-		return manager.getList(String.format("select id, name from vacancy_schema.%s", name), resultSet -> {
+		return MySqlManager.getInstance().getList(String.format("select id, name from vacancy_schema.%s", name), resultSet -> {
 			DictionaryEntity dictionaryEntity = new DictionaryEntity();
 			dictionaryEntity.setId(resultSet.getString("id"));
 			dictionaryEntity.setName(resultSet.getString("name"));

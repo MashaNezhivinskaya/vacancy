@@ -29,6 +29,15 @@ public class MySqlManager {
         }
     }
 
+    public static MySqlManager getInstance() {
+        return new MySqlManager();
+    }
+
+    private MySqlManager() {
+
+    }
+
+
     public <T> List<T> getList(String query, RowMapper<T> rowMapper) {
         try {
             List<T> list = new LinkedList<T>();

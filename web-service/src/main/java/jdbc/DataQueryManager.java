@@ -10,9 +10,8 @@ import java.util.List;
  */
 public class DataQueryManager {
     public static List<NameAndCount> getSpecializationGroups() {
-        MySqlManager manager = new MySqlManager();
         try {
-            return manager.getList("select sp.name, vs.count from (select specialization_id as id, count(vacancy_id) as count " +
+            return MySqlManager.getInstance().getList("select sp.name, vs.count from (select specialization_id as id, count(vacancy_id) as count " +
                     "from vacancy_schema.vacancyspecializations group by specialization_id) vs " +
                     "join vacancy_schema.specialization sp on sp.id = vs.id", resultSet -> {
                 NameAndCount specializationGroup = new NameAndCount();
@@ -26,9 +25,8 @@ public class DataQueryManager {
     }
 
     public static List<NameAndCount> getProfareaGroups() {
-        MySqlManager manager = new MySqlManager();
         try {
-            return manager.getList("select pr.name, p.count from (select sp.profarea_id as id, sum(vs.count) as count from (select specialization_id as id, count(vacancy_id) as count" +
+            return MySqlManager.getInstance().getList("select pr.name, p.count from (select sp.profarea_id as id, sum(vs.count) as count from (select specialization_id as id, count(vacancy_id) as count" +
                     " from vacancy_schema.vacancyspecializations group by specialization_id) vs" +
                     " join vacancy_schema.specialization sp on sp.id = vs.id group by sp.profarea_id) p" +
                     " join vacancy_schema.profarea pr on pr.id = p.id", resultSet -> {
@@ -43,7 +41,6 @@ public class DataQueryManager {
     }
 
     public static Integer getVacanciesCount() {
-        MySqlManager manager = new MySqlManager();
-        return manager.getObject("select count(*) from `vacancy_schema`.`vacancies`", resultSet -> resultSet.getInt(1));
+        return MySqlManager.getInstance().getObject("select count(*) from `vacancy_schema`.`vacancies`", resultSet -> resultSet.getInt(1));
     }
 }

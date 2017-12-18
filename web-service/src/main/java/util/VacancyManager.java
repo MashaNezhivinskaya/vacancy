@@ -20,9 +20,8 @@ import java.util.function.Supplier;
 public class VacancyManager {
 
     public static void insertVacancy(Vacancy vacancy) {
-        MySqlManager manager = new MySqlManager();
         try {
-            manager.executePreparedStatement("INSERT INTO `vacancy_schema`.`vacancies` (`id_vacancy`, `description`, " +
+            MySqlManager.getInstance().executePreparedStatement("INSERT INTO `vacancy_schema`.`vacancies` (`id_vacancy`, `description`, " +
                     "`accept_handicapped`, `accept_kids`, `alternate_url`, `name`, `test.required`, `premium`, `published_at`," +
                     " `address_id`, `salary_id`, `schedule_id`, `employment_id`, `employer_id`, `experience_id`) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", preparedStatement -> {
@@ -40,13 +39,13 @@ public class VacancyManager {
                 preparedStatement.setBoolean(8, vacancy.getPremium());
                 preparedStatement.setTimestamp(9, Timestamp.valueOf(LocalDateTime.parse(vacancy.getPublished_at().split("\\+")[0],
                         DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
-                Integer addressId = manager.insertAddress(vacancy.getAddress());
+                Integer addressId = MySqlManager.getInstance().insertAddress(vacancy.getAddress());
                 if (addressId == null) {
                     preparedStatement.setNull(10, Types.INTEGER);
                 } else {
                     preparedStatement.setInt(10, addressId);
                 }
-                Integer salaryId = manager.insertSalary(vacancy.getSalary());
+                Integer salaryId = MySqlManager.getInstance().insertSalary(vacancy.getSalary());
                 if (salaryId == null) {
                     preparedStatement.setNull(11, Types.INTEGER);
                 } else {
@@ -54,7 +53,7 @@ public class VacancyManager {
                 }
                 preparedStatement.setString(12, vacancy.getSchedule() != null ? vacancy.getSchedule().getId() : null);
                 preparedStatement.setString(13, vacancy.getEmployment() != null ? vacancy.getEmployment().getId() : null);
-                Integer employerId = manager.insertEmployer(vacancy.getEmployer());
+                Integer employerId = MySqlManager.getInstance().insertEmployer(vacancy.getEmployer());
                 if (employerId == null) {
                     preparedStatement.setNull(14, Types.INTEGER);
                 } else {
@@ -62,12 +61,12 @@ public class VacancyManager {
                 }
                 preparedStatement.setString(15, vacancy.getExperience() != null ? vacancy.getExperience().getId() : null);
             });
-            manager.executeBatchStatement("INSERT INTO `vacancy_schema`.`vacancyspecializations` (`vacancy_id`, `specialization_id`)" +
+            MySqlManager.getInstance().executeBatchStatement("INSERT INTO `vacancy_schema`.`vacancyspecializations` (`vacancy_id`, `specialization_id`)" +
                     " VALUES (?, ?)", vacancy.getSpecializations(), (preparedStatement, object) -> {
                 preparedStatement.setInt(1, vacancy.getId());
                 preparedStatement.setString(2, object.getId());
             });
-            manager.executeBatchStatement("INSERT INTO `vacancy_schema`.`key_skills` (`id`, `name`, `vacancy_id`) " +
+            MySqlManager.getInstance().executeBatchStatement("INSERT INTO `vacancy_schema`.`key_skills` (`id`, `name`, `vacancy_id`) " +
                     "VALUES (null, ?, ?)", vacancy.getKey_skills(), (preparedStatement, object) -> {
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setInt(2, vacancy.getId());
@@ -78,9 +77,8 @@ public class VacancyManager {
     }
 
     public static void instertVacancyNullValid(UiVacancy vacancy) {
-        MySqlManager manager = new MySqlManager();
         try {
-            int vacancyId = manager.executePreparedStatement("INSERT INTO `vacancy_schema`.`vacancies` (`id_vacancy`, `description`, " +
+            int vacancyId = MySqlManager.getInstance().executePreparedStatement("INSERT INTO `vacancy_schema`.`vacancies` (`id_vacancy`, `description`, " +
                     "`accept_handicapped`, `accept_kids`, `alternate_url`, `name`, `test.required`, `premium`, `published_at`," +
                     " `address_id`, `salary_id`, `schedule_id`, `employment_id`, `employer_id`, `experience_id`) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ps -> {
@@ -94,8 +92,8 @@ public class VacancyManager {
                 setIfNotNull(ps, ps::setBoolean, 7, vacancy::getTestRequired, Types.BOOLEAN);
                 setIfNotNull(ps, ps::setBoolean, 8, vacancy::getPremium, Types.BOOLEAN);
                 setIfNotNull(ps, ps::setTimestamp, 9, () -> Timestamp.valueOf(LocalDateTime.now()), Types.TIMESTAMP);
-                Integer addressId = manager.insertAddress(vacancy.getAddress());
-                Integer salaryId = manager.insertSalary(vacancy.getSalary());
+                Integer addressId = MySqlManager.getInstance().insertAddress(vacancy.getAddress());
+                Integer salaryId = MySqlManager.getInstance().insertSalary(vacancy.getSalary());
                 setIfNotNull(ps, ps::setInt, 10, () -> addressId, Types.INTEGER);
                 setIfNotNull(ps, ps::setInt, 11, () -> salaryId, Types.INTEGER);
                 setIfNotNull(ps, ps::setInt, 12, vacancy::getScheduleId, Types.INTEGER);
@@ -103,12 +101,12 @@ public class VacancyManager {
                 setIfNotNull(ps, ps::setInt, 14, vacancy::getEmployerId, Types.INTEGER);
                 setIfNotNull(ps, ps::setInt, 15, vacancy::getExperienceId, Types.INTEGER);
             });
-            manager.executePreparedStatement("INSERT INTO `vacancy_schema`.`vacancyspecializations` (`vacancy_id`, `specialization_id`)" +
+            MySqlManager.getInstance().executePreparedStatement("INSERT INTO `vacancy_schema`.`vacancyspecializations` (`vacancy_id`, `specialization_id`)" +
                     " VALUES (?, ?)", preparedStatement -> {
                 preparedStatement.setInt(1, vacancyId);
                 preparedStatement.setString(2, vacancy.getSpecialization());
             });
-            manager.executeBatchStatement("INSERT INTO `vacancy_schema`.`key_skills` (`id`, `name`, `vacancy_id`) " +
+            MySqlManager.getInstance().executeBatchStatement("INSERT INTO `vacancy_schema`.`key_skills` (`id`, `name`, `vacancy_id`) " +
                     "VALUES (null, ?, ?)", vacancy.getKeySkills(), (ps, skill) -> {
                 ps.setString(1, skill);
                 ps.setInt(2, vacancyId);
