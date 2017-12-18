@@ -1,7 +1,9 @@
 package controller;
 
+import dto.NameAndCount;
 import entities.DictionaryEntity;
 import entities.UiVacancy;
+import jdbc.DataQueryManager;
 import jdbc.MySqlManager;
 import org.springframework.web.bind.annotation.*;
 import util.VacancyManager;
@@ -86,9 +88,14 @@ public class MainController {
 		});
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/hello", produces = "application/json; charset=UTF-8")
-	public String getResultsAll() {
-		return "hello";
+	@RequestMapping(method = RequestMethod.GET, value = "/specialization/count", produces = "application/json; charset=UTF-8")
+	public List<NameAndCount> getSpecializationGroups() {
+		return DataQueryManager.getSpecializationGroups();
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/profarea/count", produces = "application/json; charset=UTF-8")
+	public List<NameAndCount> getProfareaGroups() {
+		return DataQueryManager.getProfareaGroups();
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/vacancy/create",produces = "application/json; charset=UTF-8")
