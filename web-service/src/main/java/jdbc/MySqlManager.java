@@ -158,7 +158,6 @@ public class MySqlManager {
             setDataOrNull(preparedStatement::setDouble, salary.getFrom(), 1, Types.DOUBLE);
             setDataOrNull(preparedStatement::setDouble, salary.getTo(), 2, Types.DOUBLE);
             setDataOrNull(preparedStatement::setString, salary.getCurrency(), 3, Types.VARCHAR);
-            preparedStatement.setString(3, salary.getCurrency());
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
             return getObject("select LAST_INSERT_ID()", rs -> rs.getInt(1));
