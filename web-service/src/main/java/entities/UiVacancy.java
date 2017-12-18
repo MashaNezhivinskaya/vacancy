@@ -1,38 +1,49 @@
 package entities;
 
+import com.google.gson.annotations.SerializedName;
+import org.springframework.util.StringUtils;
+
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Maria on 13.12.17.
  */
 public class UiVacancy implements Serializable {
-    private Integer id;
+
+    private static final long serialVersionUID = 2326662048259945883L;
+    @SerializedName("description")
     private String description;
+    @SerializedName("accept_handicapped")
     private Boolean acceptHandicapped;
+    @SerializedName("accept_kids")
     private Boolean acceptKids;
-    private String alternateUrl;
+    @SerializedName("name")
     private String name;
+    @SerializedName("test_required")
     private Boolean testRequired;
+    @SerializedName("premium")
     private Boolean premium;
-    private String publishedAt;
-    private Integer addressId;
-    private Integer salaryId;
+    @SerializedName("address")
+    private Address address;
+    @SerializedName("salary")
+    private Salary salary;
+    @SerializedName("schedule")
     private Integer scheduleId;
+    @SerializedName("employment")
     private Integer employmentId;
+    @SerializedName("employer")
     private Integer employerId;
+    @SerializedName("experience")
     private Integer experienceId;
 
-    private List<String> specializations;
-    private List<String> keySkills;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @SerializedName("specialization")
+    private String specialization;
+    @SerializedName("keySkill")
+    private String keySkill;
 
     public String getDescription() {
         return description;
@@ -56,14 +67,6 @@ public class UiVacancy implements Serializable {
 
     public void setAcceptKids(Boolean acceptKids) {
         this.acceptKids = acceptKids;
-    }
-
-    public String getAlternateUrl() {
-        return alternateUrl;
-    }
-
-    public void setAlternateUrl(String alternateUrl) {
-        this.alternateUrl = alternateUrl;
     }
 
     public String getName() {
@@ -90,28 +93,20 @@ public class UiVacancy implements Serializable {
         this.premium = premium;
     }
 
-    public String getPublishedAt() {
-        return publishedAt;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public Integer getAddressId() {
-        return addressId;
+    public Salary getSalary() {
+        return salary;
     }
 
-    public void setAddressId(Integer addressId) {
-        this.addressId = addressId;
-    }
-
-    public Integer getSalaryId() {
-        return salaryId;
-    }
-
-    public void setSalaryId(Integer salaryId) {
-        this.salaryId = salaryId;
+    public void setSalary(Salary salary) {
+        this.salary = salary;
     }
 
     public Integer getScheduleId() {
@@ -146,19 +141,27 @@ public class UiVacancy implements Serializable {
         this.experienceId = experienceId;
     }
 
-    public List<String> getSpecializations() {
-        return specializations;
+    public String getSpecialization() {
+        return specialization;
     }
 
-    public void setSpecializations(List<String> specializations) {
-        this.specializations = specializations;
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getKeySkill() {
+        return keySkill;
+    }
+
+    public void setKeySkill(String keySkill) {
+        this.keySkill = keySkill;
     }
 
     public List<String> getKeySkills() {
-        return keySkills;
-    }
-
-    public void setKeySkills(List<String> keySkills) {
-        this.keySkills = keySkills;
+        if (StringUtils.isEmpty(keySkill)) {
+            return Collections.emptyList();
+        } else {
+            return Arrays.stream(keySkill.split(",")).map(String::trim).collect(Collectors.toList());
+        }
     }
 }

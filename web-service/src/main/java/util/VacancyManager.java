@@ -85,26 +85,28 @@ public class VacancyManager {
                     " `address_id`, `salary_id`, `schedule_id`, `employment_id`, `employer_id`, `experience_id`) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ps -> {
 
-                setIfNotNull(ps, ps::setInt, 1, vacancy::getId, Types.INTEGER);
+                setIfNotNull(ps, ps::setInt, 1, () -> null, Types.INTEGER);
                 setIfNotNull(ps, ps::setString, 2, vacancy::getDescription, Types.VARCHAR);
                 setIfNotNull(ps, ps::setBoolean, 3, vacancy::getAcceptHandicapped, Types.BOOLEAN);
                 setIfNotNull(ps, ps::setBoolean, 4, vacancy::getAcceptKids, Types.BOOLEAN);
-                setIfNotNull(ps, ps::setString, 5, vacancy::getAlternateUrl, Types.VARCHAR);
+                setIfNotNull(ps, ps::setString, 5, () -> null, Types.VARCHAR);
                 setIfNotNull(ps, ps::setString, 6, vacancy::getName, Types.VARCHAR);
                 setIfNotNull(ps, ps::setBoolean, 7, vacancy::getTestRequired, Types.BOOLEAN);
                 setIfNotNull(ps, ps::setBoolean, 8, vacancy::getPremium, Types.BOOLEAN);
                 setIfNotNull(ps, ps::setTimestamp, 9, () -> Timestamp.valueOf(LocalDateTime.now()), Types.TIMESTAMP);
-                setIfNotNull(ps, ps::setInt, 10, vacancy::getAddressId, Types.INTEGER);
-                setIfNotNull(ps, ps::setInt, 11, vacancy::getSalaryId, Types.INTEGER);
+                Integer addressId = manager.insertAddress(vacancy.getAddress());
+                Integer salaryId = manager.insertSalary(vacancy.getSalary());
+                setIfNotNull(ps, ps::setInt, 10, () -> addressId, Types.INTEGER);
+                setIfNotNull(ps, ps::setInt, 11, () -> salaryId, Types.INTEGER);
                 setIfNotNull(ps, ps::setInt, 12, vacancy::getScheduleId, Types.INTEGER);
                 setIfNotNull(ps, ps::setInt, 13, vacancy::getEmploymentId, Types.INTEGER);
                 setIfNotNull(ps, ps::setInt, 14, vacancy::getEmployerId, Types.INTEGER);
                 setIfNotNull(ps, ps::setInt, 15, vacancy::getExperienceId, Types.INTEGER);
             });
-            manager.executeBatchStatement("INSERT INTO `vacancy_schema`.`vacancyspecializations` (`vacancy_id`, `specialization_id`)" +
-                    " VALUES (?, ?)", vacancy.getSpecializations(), (ps, specId) -> {
-                ps.setInt(1, vacancyId);
-                ps.setString(2, specId);
+            manager.executePreparedStatement("INSERT INTO `vacancy_schema`.`vacancyspecializations` (`vacancy_id`, `specialization_id`)" +
+                    " VALUES (?, ?)", preparedStatement -> {
+                preparedStatement.setInt(1, vacancyId);
+                preparedStatement.setString(2, vacancy.getSpecialization());
             });
             manager.executeBatchStatement("INSERT INTO `vacancy_schema`.`key_skills` (`id`, `name`, `vacancy_id`) " +
                     "VALUES (null, ?, ?)", vacancy.getKeySkills(), (ps, skill) -> {
