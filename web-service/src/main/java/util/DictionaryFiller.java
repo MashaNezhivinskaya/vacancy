@@ -48,7 +48,6 @@ public class DictionaryFiller {
                     });
 
         });
-        manager.closeConnection();
     }
 
     private static void fillSimpleDictionary(MySqlManager manager, String dictionaries, String code) {

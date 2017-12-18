@@ -13,7 +13,7 @@ public class MySqlManager {
     private static final String jdbcDriverStr = "com.mysql.jdbc.Driver";
     private static final String jdbcURL = "jdbc:mysql://localhost/vacancy_schema?user=root&password=root";
 
-    private Connection connection;
+    private static Connection connection;
     private Statement statement;
     private ResultSet resultSet;
     private PreparedStatement preparedStatement;
@@ -21,14 +21,9 @@ public class MySqlManager {
     static {
         try {
             Class.forName(jdbcDriverStr);
+            connection = DriverManager.getConnection(jdbcURL);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    {
-        try {
-            connection = DriverManager.getConnection(jdbcURL);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -117,13 +112,7 @@ public class MySqlManager {
         try {
             if(resultSet!=null) resultSet.close();
             if(statement!=null) statement.close();
-        } catch(Exception e){}
-    }
-
-    public void closeConnection() {
-        if(connection!=null) try {
-            connection.close();
-        } catch (SQLException e) {
+        } catch(Exception e){
         }
     }
 

@@ -21,7 +21,6 @@ public class FetchManager {
         DictionaryFiller.fillAllDictionaries();
         MySqlManager manager = new MySqlManager();
         List<Integer> ids = manager.getList("select id from `vacancy_schema`.`profarea`", resultSet -> resultSet.getInt("id"));
-        manager.closeConnection();
         try {
             System.out.println("Время начала: " + LocalDateTime.now());
             for (int i = 0; i < ids.size(); i++) {

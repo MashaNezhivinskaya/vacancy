@@ -74,8 +74,6 @@ public class VacancyManager {
             });
         } catch (Exception e) {
             System.out.println(e.toString());
-        } finally {
-            manager.closeConnection();
         }
     }
 
@@ -115,8 +113,6 @@ public class VacancyManager {
             });
         } catch (Exception e) {
             System.out.println(e.toString());
-        } finally {
-            manager.closeConnection();
         }
     }
 

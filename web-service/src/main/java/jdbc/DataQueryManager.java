@@ -22,8 +22,6 @@ public class DataQueryManager {
             });
         } catch (Exception e) {
             return Collections.emptyList();
-        } finally {
-            manager.closeConnection();
         }
     }
 
@@ -41,8 +39,6 @@ public class DataQueryManager {
             });
         } catch (Exception e) {
             return Collections.emptyList();
-        } finally {
-            manager.closeConnection();
         }
     }
 
