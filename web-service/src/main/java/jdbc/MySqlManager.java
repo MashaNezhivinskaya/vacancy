@@ -34,6 +34,7 @@ public class MySqlManager {
             List<T> list = new LinkedList<T>();
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
+            System.out.println(query);
             while(resultSet.next()){
                 list.add(rowMapper.mapEntity(resultSet));
             }
@@ -69,9 +70,7 @@ public class MySqlManager {
             filler.fillQuery(preparedStatement);
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
-            ResultSet rs = connection.createStatement().executeQuery("select LAST_INSERT_ID()");
-            rs.next();
-            return rs.getInt(1);
+            return getObject("select LAST_INSERT_ID()", rs -> rs.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -129,7 +128,9 @@ public class MySqlManager {
             setDataOrNull(preparedStatement::setString, address.getDescription(), 4, Types.VARCHAR);
             setDataOrNull(preparedStatement::setDouble, address.getLat(), 5, Types.DOUBLE);
             setDataOrNull(preparedStatement::setDouble, address.getLng(), 6, Types.DOUBLE);
-            return preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            System.out.println(preparedStatement);
+            return getObject("select LAST_INSERT_ID()", rs -> rs.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -149,7 +150,9 @@ public class MySqlManager {
             setDataOrNull(preparedStatement::setDouble, salary.getTo(), 2, Types.DOUBLE);
             setDataOrNull(preparedStatement::setString, salary.getCurrency(), 3, Types.VARCHAR);
             preparedStatement.setString(3, salary.getCurrency());
-            return preparedStatement.executeUpdate();
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+            return getObject("select LAST_INSERT_ID()", rs -> rs.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -172,7 +175,9 @@ public class MySqlManager {
                 preparedStatement.setNull(2, Types.VARCHAR);
             }
             preparedStatement.setString(3, employer.getUrl());
-            return preparedStatement.executeUpdate();
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+            return getObject("select LAST_INSERT_ID()", rs -> rs.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
