@@ -96,10 +96,10 @@ public class VacancyManager {
                 Integer salaryId = MySqlManager.getInstance().insertSalary(vacancy.getSalary());
                 setIfNotNull(ps, ps::setInt, 10, () -> addressId, Types.INTEGER);
                 setIfNotNull(ps, ps::setInt, 11, () -> salaryId, Types.INTEGER);
-                setIfNotNull(ps, ps::setInt, 12, vacancy::getScheduleId, Types.INTEGER);
-                setIfNotNull(ps, ps::setInt, 13, vacancy::getEmploymentId, Types.INTEGER);
+                setIfNotNull(ps, ps::setString, 12, vacancy::getScheduleId, Types.VARCHAR);
+                setIfNotNull(ps, ps::setString, 13, vacancy::getEmploymentId, Types.VARCHAR);
                 setIfNotNull(ps, ps::setInt, 14, vacancy::getEmployerId, Types.INTEGER);
-                setIfNotNull(ps, ps::setInt, 15, vacancy::getExperienceId, Types.INTEGER);
+                setIfNotNull(ps, ps::setString, 15, vacancy::getExperienceId, Types.VARCHAR);
             });
             MySqlManager.getInstance().executePreparedStatement("INSERT INTO `vacancy_schema`.`vacancyspecializations` (`vacancy_id`, `specialization_id`)" +
                     " VALUES (?, ?)", preparedStatement -> {

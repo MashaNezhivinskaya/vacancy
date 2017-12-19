@@ -15,34 +15,32 @@ import java.util.stream.Collectors;
 public class UiVacancy implements Serializable {
 
     private static final long serialVersionUID = 2326662048259945883L;
-    @SerializedName("description")
     private String description;
-    @SerializedName("accept_handicapped")
     private Boolean acceptHandicapped;
-    @SerializedName("accept_kids")
-    private Boolean acceptKids;
-    @SerializedName("name")
-    private String name;
-    @SerializedName("test_required")
-    private Boolean testRequired;
-    @SerializedName("premium")
-    private Boolean premium;
-    @SerializedName("address")
-    private Address address;
-    @SerializedName("salary")
-    private Salary salary;
-    @SerializedName("schedule")
-    private Integer scheduleId;
-    @SerializedName("employment")
-    private Integer employmentId;
-    @SerializedName("employer")
-    private Integer employerId;
-    @SerializedName("experience")
-    private Integer experienceId;
 
-    @SerializedName("specialization")
+    private Boolean acceptKids;
+
+    private String name;
+
+    private Boolean testRequired;
+
+    private Boolean premium;
+
+    private Address address;
+
+    private Salary salary;
+
+    private String scheduleId;
+
+    private String employmentId;
+
+    private Integer employerId;
+
+    private String experienceId;
+
+
     private String specialization;
-    @SerializedName("keySkill")
+
     private String keySkill;
 
     public String getDescription() {
@@ -109,19 +107,19 @@ public class UiVacancy implements Serializable {
         this.salary = salary;
     }
 
-    public Integer getScheduleId() {
+    public String getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(Integer scheduleId) {
+    public void setScheduleId(String scheduleId) {
         this.scheduleId = scheduleId;
     }
 
-    public Integer getEmploymentId() {
+    public String getEmploymentId() {
         return employmentId;
     }
 
-    public void setEmploymentId(Integer employmentId) {
+    public void setEmploymentId(String employmentId) {
         this.employmentId = employmentId;
     }
 
@@ -133,11 +131,11 @@ public class UiVacancy implements Serializable {
         this.employerId = employerId;
     }
 
-    public Integer getExperienceId() {
+    public String getExperienceId() {
         return experienceId;
     }
 
-    public void setExperienceId(Integer experienceId) {
+    public void setExperienceId(String experienceId) {
         this.experienceId = experienceId;
     }
 
