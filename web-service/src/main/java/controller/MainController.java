@@ -1,16 +1,19 @@
 package controller;
 
 import dto.NameAndCount;
+import dto.VacancySearchDto;
 import entities.DictionaryEntity;
 import entities.UiVacancy;
 import jdbc.DataQueryManager;
 import jdbc.MySqlManager;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import util.VacancyManager;
 
-
-import javax.xml.ws.Response;
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -96,11 +99,16 @@ public class MainController {
 	public List<NameAndCount> getProfareaGroups() {
 		return DataQueryManager.getProfareaGroups();
 	}
-	
-	@RequestMapping(method = RequestMethod.POST, value = "/vacancy/create",produces = "application/json; charset=UTF-8")
-		public Object putResultToStash(@RequestBody UiVacancy vacancy) {
+
+	@RequestMapping(method = RequestMethod.POST, value = "/vacancy/create", produces = "application/json; charset=UTF-8")
+	public Object putResultToStash(@RequestBody UiVacancy vacancy) {
 		VacancyManager.instertVacancyNullValid(vacancy);
 		return "OK";
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/vacancy/search", produces = "application/json; charset=UTF-8")
+	public List<VacancySearchDto> getVacanciesForTable(@RequestBody UiVacancy vacancy) {
+		return DataQueryManager.getVacanciesSearch(vacancy);
 	}
 
     @RequestMapping(method = RequestMethod.GET, value = "/vacancies/count", produces = "application/json; charset=UTF-8")

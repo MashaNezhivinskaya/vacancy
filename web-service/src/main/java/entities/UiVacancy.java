@@ -43,6 +43,16 @@ public class UiVacancy implements Serializable {
 
     private String keySkill;
 
+    private Integer page;
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -161,5 +171,9 @@ public class UiVacancy implements Serializable {
         } else {
             return Arrays.stream(keySkill.split(",")).map(String::trim).collect(Collectors.toList());
         }
+    }
+
+    public Integer getOffset() {
+        return getPage() * 6;
     }
 }
