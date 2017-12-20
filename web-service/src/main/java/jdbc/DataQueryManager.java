@@ -4,14 +4,34 @@ import dto.NameAndCount;
 import dto.VacancySearchDto;
 import entities.UiVacancy;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
  * Created by Voronovich Viacheslav on 18.12.2017.
  */
 public class DataQueryManager {
+    private static final Map<Integer, String> monthNames = new HashMap<Integer, String>() {{
+        put(1, "Январь");
+        put(2, "Февраль");
+        put(3, "Март");
+        put(4, "Апрель");
+        put(5, "Май");
+        put(6, "Июнь");
+        put(7, "Июль");
+        put(8, "Август");
+        put(9, "Сентябрь");
+        put(10, "Октябрь");
+        put(11, "Ноябрь");
+        put(12, "Декабрь");
+    }};
+
     public static List<NameAndCount> getSpecializationGroups() {
         try {
             return MySqlManager.getInstance().getList("select sp.name, vs.count from (select specialization_id as id, count(vacancy_id) as count " +
@@ -39,8 +59,18 @@ public class DataQueryManager {
     }
 
     public static List<NameAndCount> getVacancyYearDetail() {
-        //TODO запрос за последний год и в java разобрать по месяцам
-        return null;
+        LocalDateTime explicitRightBorder = LocalDate.now().withDayOfMonth(1).plusMonths(1).atStartOfDay();
+        LocalDateTime implicitLeftBorder = explicitRightBorder.minusYears(1);
+        return MySqlManager.getInstance().getList("select MONTH(published_at) as month, count(*) as count from vacancy_schema.vacancies " +
+                "where published_at >= ? and published_at < ? group by MONTH(published_at)", preparedStatement -> {
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(implicitLeftBorder));
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(explicitRightBorder));
+        },resultSet -> {
+            NameAndCount value = new NameAndCount();
+            value.setName(monthNames.get(resultSet.getInt("month")));
+            value.setCount(resultSet.getInt("count"));
+            return value;
+        });
     }
 
     public static List<NameAndCount> getProfareaGroups() {
