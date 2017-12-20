@@ -127,20 +127,20 @@ public class DataQueryManager {
         boolean dateAll = vacancy.getSalary() != null && vacancy.getSalary().getFrom() != null && vacancy.getSalary().getTo() != null;
         boolean currency = vacancy.getSalary() != null && vacancy.getSalary().getCurrency() != null;
         boolean specialization = vacancy.getSpecialization() != null;
-        builder.add("and vac.accept_handicapped = %d ", acceptHandicaped, () -> vacancy.getAcceptHandicapped() ? 1 : 0)
-                .add("and vac.accept_kids = %d ", acceptKids, () ->vacancy.getAcceptKids() ? 1 : 0)
-                .add("and vac.`test.required`= %d ", testRequired, () ->vacancy.getTestRequired() ? 1 : 0)
-                .add("and vac.premium = %d ", premium, () ->vacancy.getPremium() ? 1 : 0)
+        builder.add("and vac.accept_handicapped = %s ", acceptHandicaped, () -> vacancy.getAcceptHandicapped() ? 1 : 0)
+                .add("and vac.accept_kids = %s ", acceptKids, () ->vacancy.getAcceptKids() ? 1 : 0)
+                .add("and vac.`test.required`= %s ", testRequired, () ->vacancy.getTestRequired() ? 1 : 0)
+                .add("and vac.premium = %s ", premium, () ->vacancy.getPremium() ? 1 : 0)
                 .add("and vac.schedule_id = '%s' ", schedule, vacancy::getScheduleId)
                 .add("and vac.employment_id = '%s' ", employment, vacancy::getEmploymentId)
                 .add("and vac.experience_id = '%s' ", experience, vacancy::getExperienceId)
-                .add("and (s.from >= %d or s.to >= %d) ", dateFrom, () -> new Object[] {vacancy.getSalary().getFrom(), vacancy.getSalary().getFrom()})
-                .add("and (s.to <= %d or s.from <= %d) ", dateTo, () -> new Object[] {vacancy.getSalary().getTo(), vacancy.getSalary().getTo()})
-                .add("and (s.from >= %d and s.to <= %d) ", dateAll, () -> new Object[] {vacancy.getSalary().getFrom(), vacancy.getSalary().getTo()})
-                .add("and s.currency_id = %d ", currency, () -> vacancy.getSalary().getCurrency())
+                .add("and (s.from >= %s or s.to >= %s) ", dateFrom, () -> new Object[] {vacancy.getSalary().getFrom(), vacancy.getSalary().getFrom()})
+                .add("and (s.to <= %s or s.from <= %s) ", dateTo, () -> new Object[] {vacancy.getSalary().getTo(), vacancy.getSalary().getTo()})
+                .add("and (s.from >= %s and s.to <= %s) ", dateAll, () -> new Object[] {vacancy.getSalary().getFrom(), vacancy.getSalary().getTo()})
+                .add("and s.currency_id = %s ", currency, () -> vacancy.getSalary().getCurrency())
                 .add(") search ", true, () -> new Object[0])
-                .add("join vacancy_schema.vacancyspecializations vs on vs.vacancy_id = search.id and vs.specialization_id = %s", specialization, vacancy::getSpecialization)
-                .add("order by published_at desc limit 6 offset %d", true, vacancy::getOffset);
+                .add("join vacancy_schema.vacancyspecializations vs on vs.vacancy_id = search.id and vs.specialization_id = '%s'", specialization, vacancy::getSpecialization)
+                .add("order by published_at desc limit 6 offset %s", true, vacancy::getOffset);
 
         List<VacancySearchDto> result = MySqlManager.getInstance().getList(builder.getValue(), resultSet -> {
             VacancySearchDto dto = new VacancySearchDto();
