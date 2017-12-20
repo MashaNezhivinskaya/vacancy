@@ -1,6 +1,7 @@
 package controller;
 
 import dto.NameAndCount;
+import dto.NameAndCountAndColor;
 import dto.VacancySearchDto;
 import entities.DictionaryEntity;
 import entities.UiVacancy;
@@ -96,7 +97,7 @@ public class MainController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/vacancy/detail/year", produces = "application/json; charset=UTF-8")
-    public List<NameAndCount> getLastYearDetails() {
+    public List<NameAndCountAndColor> getLastYearDetails() {
         return DataQueryManager.getVacancyYearDetail();
     }
 

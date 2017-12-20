@@ -1,6 +1,7 @@
 package jdbc;
 
 import dto.NameAndCount;
+import dto.NameAndCountAndColor;
 import dto.VacancySearchDto;
 import entities.UiVacancy;
 
@@ -32,6 +33,21 @@ public class DataQueryManager {
         put(12, "Декабрь");
     }};
 
+    private static final Map<Integer, String> colorsMap = new HashMap<Integer, String>() {{
+        put(1, "#FF0F00");
+        put(2, "#FF6600");
+        put(3, "#FF9E01");
+        put(4, "#FCD202");
+        put(5, "#F8FF01");
+        put(6, "#B0DE09");
+        put(7, "#04D215");
+        put(8, "#0D8ECF");
+        put(9, "#0D52D1");
+        put(10, "#2A0CD0");
+        put(11, "#8A0CCF");
+        put(12, "#CD0D74");
+    }};
+
     public static List<NameAndCount> getSpecializationGroups() {
         try {
             return MySqlManager.getInstance().getList("select sp.name, vs.count from (select specialization_id as id, count(vacancy_id) as count " +
@@ -58,7 +74,7 @@ public class DataQueryManager {
         });
     }
 
-    public static List<NameAndCount> getVacancyYearDetail() {
+    public static List<NameAndCountAndColor> getVacancyYearDetail() {
         LocalDateTime explicitRightBorder = LocalDate.now().withDayOfMonth(1).plusMonths(1).atStartOfDay();
         LocalDateTime implicitLeftBorder = explicitRightBorder.minusYears(1);
         return MySqlManager.getInstance().getList("select MONTH(published_at) as month, count(*) as count from vacancy_schema.vacancies " +
@@ -66,9 +82,11 @@ public class DataQueryManager {
             preparedStatement.setTimestamp(1, Timestamp.valueOf(implicitLeftBorder));
             preparedStatement.setTimestamp(2, Timestamp.valueOf(explicitRightBorder));
         },resultSet -> {
-            NameAndCount value = new NameAndCount();
-            value.setName(monthNames.get(resultSet.getInt("month")));
+            NameAndCountAndColor value = new NameAndCountAndColor();
+            int month = resultSet.getInt("month");
+            value.setName(monthNames.get(month));
             value.setCount(resultSet.getInt("count"));
+            value.setColor(colorsMap.get(month));
             return value;
         });
     }
