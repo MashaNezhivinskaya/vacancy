@@ -27,6 +27,22 @@ public class DataQueryManager {
         }
     }
 
+    public static List<NameAndCount> getProfareaDetail(Integer id) {
+        return MySqlManager.getInstance().getList("select sp.name, count(*) as count from vacancy_schema.vacancyspecializations vs " +
+                "join vacancy_schema.specialization sp on sp.id = vs.specialization_id and sp.profarea_id = ? " +
+                "group by sp.id", preparedStatement -> preparedStatement.setInt(1, id), resultSet -> {
+            NameAndCount value = new NameAndCount();
+            value.setName(resultSet.getString("name"));
+            value.setCount(resultSet.getInt("count"));
+            return value;
+        });
+    }
+
+    public static List<NameAndCount> getVacancyYearDetail() {
+        //TODO запрос за последний год и в java разобрать по месяцам
+        return null;
+    }
+
     public static List<NameAndCount> getProfareaGroups() {
         try {
             return MySqlManager.getInstance().getList("select pr.name, p.count from (select sp.profarea_id as id, sum(vs.count) as count from (select specialization_id as id, count(vacancy_id) as count" +
