@@ -90,6 +90,18 @@ public class MainController {
 		});
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/profarea/detail", produces = "application/json; charset=UTF-8")
+	public List<NameAndCount> getProfareaDetails(@RequestParam Integer id) {
+		return MySqlManager.getInstance().getList("select sp.name, count(*) as count from vacancy_schema.vacancyspecializations vs " +
+				"join vacancy_schema.specialization sp on sp.id = vs.specialization_id and sp.profarea_id = ? " +
+				"group by sp.id", preparedStatement -> preparedStatement.setInt(1, id), resultSet -> {
+			NameAndCount value = new NameAndCount();
+			value.setName(resultSet.getString("name"));
+			value.setCount(resultSet.getInt("count"));
+			return value;
+		});
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "/specialization/count", produces = "application/json; charset=UTF-8")
 	public List<NameAndCount> getSpecializationGroups() {
 		return DataQueryManager.getSpecializationGroups();

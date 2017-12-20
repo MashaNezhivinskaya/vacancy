@@ -58,6 +58,27 @@ public class MySqlManager {
         return new LinkedList<T>();
     }
 
+    public <T> List<T> getList(String query, QueryFiller filler, RowMapper<T> rowMapper) {
+        try {
+            List<T> list = new LinkedList<T>();
+            preparedStatement = connection.prepareStatement(query);
+            filler.fillQuery(preparedStatement);
+            resultSet = preparedStatement.executeQuery();
+            System.out.println(query);
+            while(resultSet.next()){
+                list.add(rowMapper.mapEntity(resultSet));
+            }
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally{
+            close();
+        }
+        return new LinkedList<T>();
+    }
+
     public <T> T getObject(String query, RowMapper<T> mapper) {
         try {
             statement = connection.createStatement();

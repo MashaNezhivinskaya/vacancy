@@ -61,7 +61,7 @@ public class DataQueryManager {
         boolean dateFrom = vacancy.getSalary() != null && vacancy.getSalary().getFrom() != null;
         boolean dateTo = vacancy.getSalary() != null && vacancy.getSalary().getTo() != null;
         boolean dateAll = vacancy.getSalary() != null && vacancy.getSalary().getFrom() != null && vacancy.getSalary().getTo() != null;
-        boolean currency = vacancy.getSalary().getCurrency() != null;
+        boolean currency = vacancy.getSalary() != null && vacancy.getSalary().getCurrency() != null;
         boolean specialization = vacancy.getSpecialization() != null;
         builder.add("and vac.accept_handicapped = %d ", acceptHandicaped, () -> vacancy.getAcceptHandicapped() ? 1 : 0)
                 .add("and vac.accept_kids = %d ", acceptKids, () ->vacancy.getAcceptKids() ? 1 : 0)
