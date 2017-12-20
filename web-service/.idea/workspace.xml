@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc695b0b-392d-4732-827c-04515705158c" name="Default" comment="hotfix">
+    <list default="true" id="bc695b0b-392d-4732-827c-04515705158c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/controller/MainController.java" afterPath="$PROJECT_DIR$/src/main/java/controller/MainController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/jdbc/DataQueryManager.java" afterPath="$PROJECT_DIR$/src/main/java/jdbc/DataQueryManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/jdbc/MySqlManager.java" afterPath="$PROJECT_DIR$/src/main/java/jdbc/MySqlManager.java" />
     </list>
     <ignored path="web-service.iws" />
@@ -27,16 +25,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="MySqlManager.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MySqlManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/jdbc/MySqlManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="66" column="38" selection-start-line="66" selection-start-column="38" selection-end-line="66" selection-end-column="38" />
+            <state relative-caret-position="278">
+              <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1513793746195" expanded="true" signature="4688:4849" ph="INSERT INTO `vacancy_schema`.`address`... " />
-                <marker date="1513793746195" expanded="true" signature="5986:6107" ph="INSERT INTO `vacancy_schema`.`salary`... " />
-                <marker date="1513793746195" expanded="true" signature="6958:7088" ph="INSERT INTO `vacancy_schema`.`employer`... " />
+                <marker date="1513794010254" expanded="true" signature="4700:4861" ph="INSERT INTO `vacancy_schema`.`address`... " />
+                <marker date="1513794010254" expanded="true" signature="5998:6119" ph="INSERT INTO `vacancy_schema`.`salary`... " />
+                <marker date="1513794010254" expanded="true" signature="6970:7100" ph="INSERT INTO `vacancy_schema`.`employer`... " />
               </folding>
             </state>
           </provider>
@@ -158,11 +156,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/controller/MainController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="99" column="54" selection-start-line="99" selection-start-column="54" selection-end-line="99" selection-end-column="54" />
+            <state relative-caret-position="124">
+              <caret line="94" column="45" selection-start-line="94" selection-start-column="45" selection-end-line="94" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -213,8 +211,8 @@
         <option value="$PROJECT_DIR$/src/main/java/dto/VacancySearchDto.java" />
         <option value="$PROJECT_DIR$/src/main/java/entities/UiVacancy.java" />
         <option value="$PROJECT_DIR$/src/main/java/jdbc/DataQueryManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/jdbc/MySqlManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/controller/MainController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/jdbc/MySqlManager.java" />
       </list>
     </option>
   </component>
@@ -1018,7 +1016,7 @@
       <workItem from="1513709984387" duration="2043000" />
       <workItem from="1513716008680" duration="6806000" />
       <workItem from="1513720729320" duration="739000" />
-      <workItem from="1513777297676" duration="3438000" />
+      <workItem from="1513777297676" duration="3563000" />
     </task>
     <task id="LOCAL-00001" summary="profarea and specialization info">
       <created>1513627935754</created>
@@ -1055,11 +1053,18 @@
       <option name="project" value="LOCAL" />
       <updated>1513632478340</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="profarea detail request">
+      <created>1513793958266</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1513793958266</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38281000" />
+    <option name="totallyTimeSpent" value="38406000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
@@ -1114,7 +1119,8 @@
     <MESSAGE value="last_insert_id + show sql" />
     <MESSAGE value="vacancy create method" />
     <MESSAGE value="hotfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="hotfix" />
+    <MESSAGE value="profarea detail request" />
+    <option name="LAST_COMMIT_MESSAGE" value="profarea detail request" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1482,25 +1488,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/jdbc/MySqlManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/controller/MainController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="66" column="38" selection-start-line="66" selection-start-column="38" selection-end-line="66" selection-end-column="38" />
+        <state relative-caret-position="124">
+          <caret line="94" column="45" selection-start-line="94" selection-start-column="45" selection-end-line="94" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1513793746195" expanded="true" signature="4688:4849" ph="INSERT INTO `vacancy_schema`.`address`... " />
-            <marker date="1513793746195" expanded="true" signature="5986:6107" ph="INSERT INTO `vacancy_schema`.`salary`... " />
-            <marker date="1513793746195" expanded="true" signature="6958:7088" ph="INSERT INTO `vacancy_schema`.`employer`... " />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/controller/MainController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/jdbc/MySqlManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="99" column="54" selection-start-line="99" selection-start-column="54" selection-end-line="99" selection-end-column="54" />
+        <state relative-caret-position="278">
+          <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
+            <marker date="1513794010254" expanded="true" signature="4700:4861" ph="INSERT INTO `vacancy_schema`.`address`... " />
+            <marker date="1513794010254" expanded="true" signature="5998:6119" ph="INSERT INTO `vacancy_schema`.`salary`... " />
+            <marker date="1513794010254" expanded="true" signature="6970:7100" ph="INSERT INTO `vacancy_schema`.`employer`... " />
           </folding>
         </state>
       </provider>

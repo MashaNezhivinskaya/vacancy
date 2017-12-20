@@ -63,8 +63,8 @@ public class MySqlManager {
             List<T> list = new LinkedList<T>();
             preparedStatement = connection.prepareStatement(query);
             filler.fillQuery(preparedStatement);
+            System.out.println(preparedStatement);
             resultSet = preparedStatement.executeQuery();
-            System.out.println(query);
             while(resultSet.next()){
                 list.add(rowMapper.mapEntity(resultSet));
             }
