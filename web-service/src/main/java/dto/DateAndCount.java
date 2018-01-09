@@ -1,6 +1,7 @@
 package dto;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by Voronovich Viacheslav on 09.01.2018.
@@ -14,11 +15,11 @@ public class DateAndCount {
         this.count = count;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public String getDate() {
+        return date.format(DateTimeFormatter.ISO_DATE);
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public Integer getCount() {
+        return count;
     }
 }
