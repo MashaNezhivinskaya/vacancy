@@ -185,7 +185,7 @@ public class DataQueryManager {
     }
 
     public static List<DateAndCount> getVacaniesCountForLastMonthByProfarea(Integer profareaId) {
-        return MySqlManager.getInstance().getList("select count(*), published_at from (select distinct(vac.id) as id, " +
+        return MySqlManager.getInstance().getList("select count(*) as count , published_at from (select distinct(vac.id) as id, " +
                 "vac.published_at " +
                 "from (select vac.id_vacancy as id, date(vac.published_at) as published_at " +
                 "from vacancy_schema.vacancies vac " +
