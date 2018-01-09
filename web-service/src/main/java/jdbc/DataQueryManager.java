@@ -220,9 +220,9 @@ public class DataQueryManager {
         double b =  tryGetDouble(() -> b1 / n);
         DateAndCountAndPoints result = new DateAndCountAndPoints();
         result.setValues(values);
-        int x1 = values.get(0).getCount();
+        int x1 = 1;
         double y1 = getFunctionResult(x1, a, b);
-        int x2 = values.get(values.size()-1).getCount();
+        int x2 = values.size();
         double y2 = getFunctionResult(x2, a, b);
         result.setX1(x1);
         result.setY1(y1);
