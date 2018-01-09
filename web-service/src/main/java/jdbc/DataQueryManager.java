@@ -1,6 +1,7 @@
 package jdbc;
 
 import dto.DateAndCount;
+import dto.DateAndCountAndPoints;
 import dto.NameAndCount;
 import dto.NameAndCountAndColor;
 import dto.VacancySearchDto;
@@ -184,8 +185,8 @@ public class DataQueryManager {
         return MySqlManager.getInstance().getObject("select count(*) from `vacancy_schema`.`vacancies`", resultSet -> resultSet.getInt(1));
     }
 
-    public static List<DateAndCount> getVacaniesCountForLastMonthByProfarea(Integer profareaId) {
-        return MySqlManager.getInstance().getList("select count(*) as count , published_at from (select distinct(vac.id) as id, " +
+    public static DateAndCountAndPoints getVacaniesCountForLastMonthByProfarea(Integer profareaId) {
+        List<DateAndCount> values = MySqlManager.getInstance().getList("select count(*) as count , published_at from (select distinct(vac.id) as id, " +
                 "vac.published_at " +
                 "from (select vac.id_vacancy as id, date(vac.published_at) as published_at " +
                 "from vacancy_schema.vacancies vac " +
@@ -193,11 +194,52 @@ public class DataQueryManager {
                 "group by published_at) as vac " +
                 "join vacancy_schema.vacancyspecializations vs on vac.id = vs.vacancy_id  " +
                 "join vacancy_schema.specialization sp on sp.id = vs.specialization_id and sp.profarea_id = ?) res " +
-                "group by published_at", preparedStatement -> {
+                "group by published_at order by published_at desc", preparedStatement -> {
             LocalDate now = LocalDate.now();
             preparedStatement.setDate(1, Date.valueOf(now.minusDays(31)));
             preparedStatement.setDate(2, Date.valueOf(now.minusDays(1)));
             preparedStatement.setInt(3, profareaId);
         }, rs -> new DateAndCount(rs.getDate("published_at").toLocalDate(), rs.getInt("count")));
+        int n = values.size();
+        Integer xySym = 0;
+        int xSum = 0;
+        int x2Sum = 0;
+        int ySum = 0;
+        for (int i = 0, x = 1; i < n; i++, x++) {
+            Integer y = values.get(i).getCount();
+            xySym += x * y;
+            xSum += x;
+            ySum += y;
+            x2Sum += x * x;
+        }
+        int xSumYSym = xSum * ySum;
+        double a1 = n * xySym - xSumYSym * 1.0;
+        int a2 = n * x2Sum - xSum*xSum;
+        double a = tryGetDouble(() -> a1 / a2);
+        double b1 = ySum - a*xSum;
+        double b =  tryGetDouble(() -> b1 / n);
+        DateAndCountAndPoints result = new DateAndCountAndPoints();
+        result.setValues(values);
+        int x1 = values.get(0).getCount();
+        double y1 = getFunctionResult(x1, a, b);
+        int x2 = values.get(values.size()-1).getCount();
+        double y2 = getFunctionResult(x2, a, b);
+        result.setX1(x1);
+        result.setY1(y1);
+        result.setX2(x2);
+        result.setY2(y2);
+        return result;
+    }
+
+    private static double tryGetDouble(Supplier<Double> sup) {
+        try {
+            return sup.get();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    private static double getFunctionResult(int x, double a, double b) {
+        return a * x + b;
     }
 }
