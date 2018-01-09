@@ -1,5 +1,6 @@
 package controller;
 
+import dto.DateAndCount;
 import dto.NameAndCount;
 import dto.NameAndCountAndColor;
 import dto.VacancySearchDto;
@@ -126,7 +127,12 @@ public class MainController {
     public Integer getVacanciesCount() {
         return DataQueryManager.getVacanciesCount();
     }
-	
+
+    @RequestMapping(method = RequestMethod.GET, value = "/vacancies/month/function/minsquare", produces = "application/json; charset=UTF-8")
+    public List<DateAndCount> getLastMonthCount(@RequestParam Integer id) {
+        return DataQueryManager.getVacaniesCountForLastMonthByProfarea(id);
+    }
+
 	private String decodeStr(String results) throws UnsupportedEncodingException {
 		results = java.net.URLDecoder.decode(results, "UTF-8");
 		if (results.endsWith("=")) {

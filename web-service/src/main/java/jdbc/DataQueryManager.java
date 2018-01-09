@@ -1,10 +1,12 @@
 package jdbc;
 
+import dto.DateAndCount;
 import dto.NameAndCount;
 import dto.NameAndCountAndColor;
 import dto.VacancySearchDto;
 import entities.UiVacancy;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -180,5 +182,21 @@ public class DataQueryManager {
 
     public static Integer getVacanciesCount() {
         return MySqlManager.getInstance().getObject("select count(*) from `vacancy_schema`.`vacancies`", resultSet -> resultSet.getInt(1));
+    }
+
+    public static List<DateAndCount> getVacaniesCountForLastMonthByProfarea(Integer profareaId) {
+        return MySqlManager.getInstance().getList("select count(*) as count, vac.published_at  " +
+                "from (select vac.id_vacancy as id, date(vac.published_at) as published_at " +
+                "from vacancy_schema.vacancies vac " +
+                "where date(vac.published_at) between ? and ? " +
+                "group by published_at) as vac " +
+                "join vacancy_schema.vacancyspecializations vs on vac.id = vs.vacancy_id  " +
+                "join vacancy_schema.specialization sp on sp.id = vs.specialization_id and sp.profarea_id = ? " +
+                "group by published_at", preparedStatement -> {
+            LocalDate now = LocalDate.now();
+            preparedStatement.setDate(1, Date.valueOf(now.minusDays(31)));
+            preparedStatement.setDate(2, Date.valueOf(now.minusDays(1)));
+            preparedStatement.setInt(3, profareaId);
+        }, rs -> new DateAndCount(rs.getDate("published_at").toLocalDate(), rs.getInt("count")));
     }
 }
