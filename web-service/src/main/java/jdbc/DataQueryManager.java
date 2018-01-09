@@ -185,13 +185,14 @@ public class DataQueryManager {
     }
 
     public static List<DateAndCount> getVacaniesCountForLastMonthByProfarea(Integer profareaId) {
-        return MySqlManager.getInstance().getList("select count(*) as count, vac.published_at  " +
+        return MySqlManager.getInstance().getList("select count(*), published_at from (select distinct(vac.id) as id, " +
+                "vac.published_at " +
                 "from (select vac.id_vacancy as id, date(vac.published_at) as published_at " +
                 "from vacancy_schema.vacancies vac " +
                 "where date(vac.published_at) between ? and ? " +
                 "group by published_at) as vac " +
                 "join vacancy_schema.vacancyspecializations vs on vac.id = vs.vacancy_id  " +
-                "join vacancy_schema.specialization sp on sp.id = vs.specialization_id and sp.profarea_id = ? " +
+                "join vacancy_schema.specialization sp on sp.id = vs.specialization_id and sp.profarea_id = ?) res " +
                 "group by published_at", preparedStatement -> {
             LocalDate now = LocalDate.now();
             preparedStatement.setDate(1, Date.valueOf(now.minusDays(31)));
