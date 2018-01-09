@@ -194,7 +194,7 @@ public class DataQueryManager {
                 "group by published_at) as vac " +
                 "join vacancy_schema.vacancyspecializations vs on vac.id = vs.vacancy_id  " +
                 "join vacancy_schema.specialization sp on sp.id = vs.specialization_id and sp.profarea_id = ?) res " +
-                "group by published_at order by published_at desc", preparedStatement -> {
+                "group by published_at order by published_at asc", preparedStatement -> {
             LocalDate now = LocalDate.now();
             preparedStatement.setDate(1, Date.valueOf(now.minusDays(31)));
             preparedStatement.setDate(2, Date.valueOf(now.minusDays(1)));
