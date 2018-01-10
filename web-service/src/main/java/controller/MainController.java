@@ -1,5 +1,6 @@
 package controller;
 
+import dto.Coordinates;
 import dto.DateAndCount;
 import dto.DateAndCountAndPoints;
 import dto.NameAndCount;
@@ -133,6 +134,11 @@ public class MainController {
     public DateAndCountAndPoints getLastMonthCount(@RequestParam Integer id) {
         return DataQueryManager.getVacaniesCountForLastMonthByProfarea(id);
     }
+
+	@RequestMapping(method = RequestMethod.GET, value = "/vacancies/coordinates/profarea", produces = "application/json; charset=UTF-8")
+	public List<Coordinates> getProfareaCoordinates(@RequestParam Integer id) {
+		return DataQueryManager.getCoordinatesByProfarea(id);
+	}
 
 	private String decodeStr(String results) throws UnsupportedEncodingException {
 		results = java.net.URLDecoder.decode(results, "UTF-8");

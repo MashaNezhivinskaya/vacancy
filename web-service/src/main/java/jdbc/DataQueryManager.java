@@ -1,5 +1,6 @@
 package jdbc;
 
+import dto.Coordinates;
 import dto.DateAndCount;
 import dto.DateAndCountAndPoints;
 import dto.NameAndCount;
@@ -229,6 +230,17 @@ public class DataQueryManager {
         result.setX2(x2);
         result.setY2(y2);
         return result;
+    }
+
+    public static List<Coordinates> getCoordinatesByProfarea(Integer profareaId) {
+        return MySqlManager.getInstance().getList("select distinct(a.id), a.lat, a.lng  " +
+                "from vacancy_schema.address a " +
+                "join vacancy_schema.vacancies vac on a.id = vac.address_id " +
+                "join vacancy_schema.vacancyspecializations vs on vs.vacancy_id = vac.id_vacancy " +
+                "join vacancy_schema.specialization sp on sp.id = vs.specialization_id and sp.profarea_id = ? "+
+                "where a.lat is not null and a.lng is not null",
+                preparedStatement -> preparedStatement.setInt(1, profareaId),
+                rs -> new Coordinates(rs.getDouble("lat"), rs.getDouble("lng")));
     }
 
     private static double tryGetDouble(Supplier<Double> sup) {
